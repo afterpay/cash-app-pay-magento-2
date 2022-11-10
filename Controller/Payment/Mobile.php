@@ -1,17 +1,22 @@
 <?php declare(strict_types=1);
 namespace Afterpay\CashApp\Controller\Payment;
 
-class Mobile implements \Magento\Framework\App\Action\HttpGetActionInterface
+class Mobile extends \Magento\Framework\App\Action\Action implements \Magento\Framework\App\Action\HttpGetActionInterface
 {
     const CASH_REQUEST_ID = 'cash_request_id';
     const IS_REDIRECTED = 'isRedirected';
 
-    private \Magento\Framework\App\RequestInterface $request;
-    private \Magento\Framework\Message\ManagerInterface $messageManager;
-    private \Magento\Framework\View\Result\PageFactory $resultPageFactory;
-    private \Magento\Framework\Controller\Result\RedirectFactory $redirectFactory;
+    /** @var \Magento\Framework\App\RequestInterface */
+    private $request;
+    /** @var \Magento\Framework\Message\ManagerInterface */
+    protected $messageManager;
+    /** @var \Magento\Framework\View\Result\PageFactory */
+    private $resultPageFactory;
+    /** @var \Magento\Framework\Controller\Result\RedirectFactory */
+    private $redirectFactory;
 
     public function __construct(
+        \Magento\Framework\App\Action\Context $context,
         \Magento\Framework\App\RequestInterface $request,
         \Magento\Framework\Message\ManagerInterface $messageManager,
         \Magento\Framework\Controller\Result\RedirectFactory $redirectFactory,
@@ -21,6 +26,7 @@ class Mobile implements \Magento\Framework\App\Action\HttpGetActionInterface
         $this->messageManager = $messageManager;
         $this->redirectFactory = $redirectFactory;
         $this->resultPageFactory = $resultPageFactory;
+        parent::__construct($context);
     }
 
     public function execute()

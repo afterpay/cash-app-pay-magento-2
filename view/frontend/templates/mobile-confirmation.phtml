@@ -1,10 +1,9 @@
 <?php
 /** @var Magento\Framework\View\Element\Template $block */
-/** @var Magento\Framework\Escaper $escaper */
 ?>
 <div class="redirect-text">
-    <p><?= $escaper->escapeHtml(__('Processing your payment')) ?></p>
-    <p class="notify-message"><?= $escaper->escapeHtml(__('Please wait...')) ?></p>
+    <p><?= $block->escapeHtml(__('Processing your payment')) ?></p>
+    <p class="notify-message"><?= $block->escapeHtml(__('Please wait...')) ?></p>
 </div>
 <script type="text/x-magento-init">
     {

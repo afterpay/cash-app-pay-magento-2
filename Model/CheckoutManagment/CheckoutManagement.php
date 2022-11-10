@@ -7,13 +7,20 @@ use Afterpay\Afterpay\Api\Data\RedirectPathInterface;
 
 class CheckoutManagement extends \Afterpay\Afterpay\Model\CheckoutManagement\CheckoutManagement
 {
-    private \Magento\Payment\Gateway\CommandInterface $checkoutCommand;
-    private \Magento\Payment\Gateway\CommandInterface $expressCheckoutCommand;
-    private \Magento\Quote\Api\CartRepositoryInterface $cartRepository;
-    private \Magento\Quote\Model\MaskedQuoteIdToQuoteIdInterface $maskedQuoteIdToQuoteId;
-    private \Afterpay\Afterpay\Api\Data\CheckoutInterfaceFactory $checkoutFactory;
-    private ?\Afterpay\Afterpay\Model\Spi\CheckoutValidatorInterface $expressCheckoutValidator;
-    private ?\Afterpay\Afterpay\Model\Spi\CheckoutValidatorInterface $checkoutValidator;
+    /** @var \Magento\Payment\Gateway\CommandInterface */
+    private $checkoutCommand;
+    /** @var \Magento\Payment\Gateway\CommandInterface */
+    private $expressCheckoutCommand;
+    /** @var \Magento\Quote\Api\CartRepositoryInterface */
+    private $cartRepository;
+    /** @var \Magento\Quote\Model\MaskedQuoteIdToQuoteIdInterface */
+    private $maskedQuoteIdToQuoteId;
+    /** @var \Afterpay\Afterpay\Api\Data\CheckoutInterfaceFactory */
+    private $checkoutFactory;
+    /** @var \Afterpay\Afterpay\Model\Spi\CheckoutValidatorInterface */
+    private $expressCheckoutValidator;
+    /** @var \Afterpay\Afterpay\Model\Spi\CheckoutValidatorInterface */
+    private $checkoutValidator;
 
     public function create(string $cartId, RedirectPathInterface $redirectPath): CheckoutInterface
     {

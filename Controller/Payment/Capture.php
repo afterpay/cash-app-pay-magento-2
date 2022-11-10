@@ -8,12 +8,18 @@ class Capture implements \Magento\Framework\App\Action\HttpGetActionInterface
     const CHECKOUT_STATUS_SUCCESS = 'SUCCESS';
     const CHECKOUT_STATUS_DECLINED = 'DECLINED';
 
-    private \Magento\Framework\App\RequestInterface $request;
-    private \Magento\Checkout\Model\Session $session;
-    private \Magento\Framework\Controller\Result\RedirectFactory $redirectFactory;
-    private \Magento\Framework\Message\ManagerInterface $messageManager;
-    private \Afterpay\Afterpay\Model\Payment\Capture\PlaceOrderProcessor $placeOrderProcessor;
-    private \Magento\Payment\Gateway\CommandInterface $validateCheckoutDataCommand;
+    /** @var \Magento\Framework\App\RequestInterface */
+    private $request;
+    /** @var \Magento\Checkout\Model\Session */
+    private $session;
+    /** @var \Magento\Framework\Controller\Result\RedirectFactory */
+    private $redirectFactory;
+    /** @var \Magento\Framework\Message\ManagerInterface */
+    private $messageManager;
+    /** @var \Afterpay\Afterpay\Model\Payment\Capture\PlaceOrderProcessor */
+    private $placeOrderProcessor;
+    /** @var \Magento\Payment\Gateway\CommandInterface */
+    private $validateCheckoutDataCommand;
 
     public function __construct(
         \Magento\Framework\App\RequestInterface $request,

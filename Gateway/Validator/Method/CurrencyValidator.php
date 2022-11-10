@@ -6,7 +6,7 @@ class CurrencyValidator extends \Magento\Payment\Gateway\Validator\AbstractValid
 {
     private const AVAILABLE_CURRENCY = 'USD';
 
-    private \Magento\Checkout\Model\Session $checkoutSession;
+    private $checkoutSession;
 
     public function __construct(
         \Magento\Payment\Gateway\Validator\ResultInterfaceFactory $resultFactory,

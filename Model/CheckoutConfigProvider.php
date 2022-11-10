@@ -4,7 +4,8 @@ namespace Afterpay\CashApp\Model;
 
 class CheckoutConfigProvider implements \Magento\Checkout\Model\ConfigProviderInterface
 {
-    private \Magento\Framework\Locale\Resolver $localeResolver;
+    /** @var \Magento\Framework\Locale\Resolver */
+    private $localeResolver;
 
     public function __construct(
         \Magento\Framework\Locale\Resolver $localeResolver

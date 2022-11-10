@@ -44,7 +44,8 @@
         </arguments>
     </virtualType>
 
-    <virtualType name="Afterpay\CashApp\Block\Adminhtml\System\Config\Fieldset\Payment" type="Afterpay\CashApp\Block\Adminhtml\System\Config\Fieldset\AllowedByCountry">
+    <virtualType name="Afterpay\CashApp\Block\Adminhtml\System\Config\Fieldset\Payment"
+                 type="Afterpay\CashApp\Block\Adminhtml\System\Config\Fieldset\AllowedByCountry">
         <arguments>
             <argument name="allowedCountriesConfigPath" xsi:type="string">allowed_merchant_countries</argument>
         </arguments>
