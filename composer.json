@@ -1,15 +1,16 @@
 {
-    "name": "afterpay-global/module-cashapp",
+    "name": "afterpay-global/module-cash-app-pay",
     "license": "Apache-2.0",
     "type": "magento2-module",
-    "description": "Magento 2 Afterpay CashApp Payment Module",
+    "description": "Cash App Pay module for Magento 2",
     "version": "5.0.0",
     "require": {
         "php": "~7.4.0||~8.1.0",
         "magento/framework": "^103.0",
         "magento/module-checkout": "100.4.*",
         "magento/module-payment": "100.4.*",
-        "magento/module-sales": "103.0.*"
+        "magento/module-sales": "103.0.*",
+        "afterpay-global/module-afterpay": "^5.*@beta"
     },
     "authors": [
         {
