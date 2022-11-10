@@ -1,0 +1,25 @@
+<div class="cashapp payment-method" data-bind="css: {'_active': (getCode() == isChecked())}">
+    <div class="payment-method-title field choice">
+        <input type="radio"
+               name="payment[method]"
+               class="radio"
+               data-bind="attr: {'id': getCode()}, value: getCode(), checked: isChecked, click: selectPaymentMethod, visible: isRadioButtonVisible()"/>
+        <label data-bind="attr: {'for': getCode()}" class="label">
+            <img data-bind="attr: { src: require.toUrl('Afterpay_CashApp/images/cashapp-logo.svg') }" class="payment-icon" alt="Cash App Pay"/>
+        </label>
+    </div>
+    <div class="payment-method-content">
+        <!-- ko foreach: getRegion('messages') -->
+        <!-- ko template: getTemplate() --><!-- /ko -->
+        <!--/ko-->
+        <div class="payment-method-billing-address">
+            <!-- ko foreach: $parent.getRegion(getBillingAddressFormName()) -->
+            <!-- ko template: getTemplate() --><!-- /ko -->
+            <!--/ko-->
+        </div>
+        <div class="cashapp actions-toolbar-wraper" data-bind="visible: isPlaceOrderActionAllowed()">
+            <div id="cash-app-pay"></div>
+        </div>
+        <div style="clear: both">&nbsp;</div>
+    </div>
+</div>

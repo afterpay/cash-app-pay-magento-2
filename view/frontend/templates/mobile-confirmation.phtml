@@ -1,0 +1,15 @@
+<?php
+/** @var Magento\Framework\View\Element\Template $block */
+/** @var Magento\Framework\Escaper $escaper */
+?>
+<div class="redirect-text">
+    <p><?= $escaper->escapeHtml(__('Processing your payment')) ?></p>
+    <p class="notify-message"><?= $escaper->escapeHtml(__('Please wait...')) ?></p>
+</div>
+<script type="text/x-magento-init">
+    {
+        "*": {
+            "Afterpay_CashApp/js/mobile-confirmation": {}
+        }
+    }
+</script>
