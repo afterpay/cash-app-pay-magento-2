@@ -6,6 +6,7 @@ define([
         'Magento_Checkout/js/action/set-payment-information',
         'Magento_Checkout/js/action/select-payment-method',
         'Magento_Checkout/js/checkout-data',
+        'Magento_Checkout/js/model/quote',
         'Magento_Checkout/js/model/error-processor',
         'Magento_Customer/js/customer-data',
         'Magento_Customer/js/section-config',
@@ -18,6 +19,7 @@ define([
         setPaymentInformationAction,
         selectPaymentMethodAction,
         checkoutData,
+        quote,
         errorProcessor,
         customerData,
         sectionConfig,
@@ -32,12 +34,27 @@ define([
 
             initialize: function () {
                 let res = this._super();
+                let self = this;
 
+                if ($('#checkout.am-checkout').length) {
+                    setTimeout(this.showCashAppContinueButton.bind(this), 3000);
+                } else {
+                    this.showCashAppContinueButton();
+                }
+
+                quote.totals.subscribe(function () {
+                    if (checkoutData.getSelectedPaymentMethod() === 'cashapp') {
+                        self.continueToCashApp();
+                    }
+                });
+
+                return res;
+            },
+
+            showCashAppContinueButton: function () {
                 if (checkoutData.getSelectedPaymentMethod() === 'cashapp') {
                     this.continueToCashApp();
                 }
-
-                return res;
             },
 
             /**
