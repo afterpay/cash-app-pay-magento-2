@@ -1,6 +1,11 @@
 <?xml version="1.0"?>
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <type name="Afterpay\CashApp\Block\Payment\Info">
+        <arguments>
+            <argument name="config" xsi:type="object">Afterpay\CashApp\Gateway\Config\Config</argument>
+        </arguments>
+    </type>
     <type name="Afterpay\CashApp\Block\Adminhtml\System\Config\Fieldset\AllowedByCountry">
         <arguments>
             <argument name="afterpay" xsi:type="object">Afterpay\CashApp\Model\Method\MethodFacade</argument>
