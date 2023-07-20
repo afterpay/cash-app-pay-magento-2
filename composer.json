@@ -3,9 +3,9 @@
     "license": "Apache-2.0",
     "type": "magento2-module",
     "description": "Cash App Pay module for Magento 2",
-    "version": "5.0.2",
+    "version": "5.0.3",
     "require": {
-        "php": "~7.4.0||~8.1.0",
+        "php": ">=7.4.0",
         "magento/framework": "^103.0",
         "magento/module-checkout": "100.4.*",
         "magento/module-payment": "100.4.*",
