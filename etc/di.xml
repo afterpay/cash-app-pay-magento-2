@@ -54,4 +54,15 @@
         <plugin name="afterpay_cashapp_add_cashapp_to_payment_method_checker"
                 type="Afterpay\CashApp\Plugin\Model\Checks\PaymentMethod"/>
     </type>
+
+    <virtualType name="Afterpay\CashApp\Model\Payment\Capture\PlaceOrderProcessor" type="Afterpay\Afterpay\Model\Payment\Capture\PlaceOrderProcessor">
+        <arguments>
+            <argument name="paymentErrorProcessor" xsi:type="object">Afterpay\CashApp\Model\Payment\PaymentErrorProcessor</argument>
+        </arguments>
+    </virtualType>
+    <type name="Afterpay\CashApp\Controller\Payment\Capture">
+        <arguments>
+            <argument name="placeOrderProcessor" xsi:type="object">Afterpay\CashApp\Model\Payment\Capture\PlaceOrderProcessor</argument>
+        </arguments>
+    </type>
 </config>
