@@ -2,32 +2,37 @@
 
 namespace Afterpay\CashApp\Controller\Payment;
 
-class Capture implements \Magento\Framework\App\Action\HttpGetActionInterface
-{
-    const CHECKOUT_STATUS_CANCELLED = 'CANCELLED';
-    const CHECKOUT_STATUS_SUCCESS = 'SUCCESS';
-    const CHECKOUT_STATUS_DECLINED = 'DECLINED';
+use Afterpay\Afterpay\Model\Payment\Capture\PlaceOrderProcessor;
+use Magento\Checkout\Model\Session;
+use Magento\Framework\App\Action\HttpGetActionInterface;
+use Magento\Framework\App\RequestInterface;
+use Magento\Framework\Controller\Result\RedirectFactory;
+use Magento\Framework\Exception\LocalizedException;
+use Magento\Framework\Message\ManagerInterface;
+use Magento\Payment\Gateway\CommandInterface;
+use Magento\Store\Model\StoreManagerInterface;
 
-    /** @var \Magento\Framework\App\RequestInterface */
+class Capture implements HttpGetActionInterface
+{
+    private const CHECKOUT_STATUS_CANCELLED = 'CANCELLED';
+    private const CHECKOUT_STATUS_SUCCESS = 'SUCCESS';
+    private const CHECKOUT_STATUS_DECLINED = 'DECLINED';
     private $request;
-    /** @var \Magento\Checkout\Model\Session */
     private $session;
-    /** @var \Magento\Framework\Controller\Result\RedirectFactory */
     private $redirectFactory;
-    /** @var \Magento\Framework\Message\ManagerInterface */
     private $messageManager;
-    /** @var \Afterpay\Afterpay\Model\Payment\Capture\PlaceOrderProcessor */
     private $placeOrderProcessor;
-    /** @var \Magento\Payment\Gateway\CommandInterface */
     private $validateCheckoutDataCommand;
+    private $storeManager;
 
     public function __construct(
-        \Magento\Framework\App\RequestInterface $request,
-        \Magento\Checkout\Model\Session $session,
-        \Magento\Framework\Controller\Result\RedirectFactory $redirectFactory,
-        \Magento\Framework\Message\ManagerInterface $messageManager,
-        \Afterpay\Afterpay\Model\Payment\Capture\PlaceOrderProcessor $placeOrderProcessor,
-        \Magento\Payment\Gateway\CommandInterface $validateCheckoutDataCommand
+        RequestInterface      $request,
+        Session               $session,
+        RedirectFactory       $redirectFactory,
+        ManagerInterface      $messageManager,
+        PlaceOrderProcessor   $placeOrderProcessor,
+        CommandInterface      $validateCheckoutDataCommand,
+        StoreManagerInterface $storeManager
     ) {
         $this->request = $request;
         $this->session = $session;
@@ -35,6 +40,7 @@ class Capture implements \Magento\Framework\App\Action\HttpGetActionInterface
         $this->messageManager = $messageManager;
         $this->placeOrderProcessor = $placeOrderProcessor;
         $this->validateCheckoutDataCommand = $validateCheckoutDataCommand;
+        $this->storeManager = $storeManager;
     }
 
     public function execute()
@@ -43,19 +49,28 @@ class Capture implements \Magento\Framework\App\Action\HttpGetActionInterface
             $this->messageManager->addErrorMessage(
                 (string)__('You have cancelled your Cash App payment. Please select an alternative payment method.')
             );
-            return $this->redirectFactory->create()->setPath('checkout/cart');
+
+            return $this->redirectFactory->create()->setPath('checkout/cart', [
+                '_scope' => $this->storeManager->getStore()
+            ]);
         }
         if ($this->request->getParam('status') == self::CHECKOUT_STATUS_DECLINED) {
             $this->messageManager->addErrorMessage(
                 (string)__('Cash App payment is declined.')
             );
-            return $this->redirectFactory->create()->setPath('checkout');
+
+            return $this->redirectFactory->create()->setPath('checkout/cart', [
+                '_scope' => $this->storeManager->getStore()
+            ]);
         }
         if ($this->request->getParam('status') != self::CHECKOUT_STATUS_SUCCESS) {
             $this->messageManager->addErrorMessage(
                 (string)__('Cash App payment is failed. Please select an alternative payment method.')
             );
-            return $this->redirectFactory->create()->setPath('checkout/cart');
+
+            return $this->redirectFactory->create()->setPath('checkout/cart', [
+                '_scope' => $this->storeManager->getStore()
+            ]);
         }
 
         try {
@@ -63,14 +78,18 @@ class Capture implements \Magento\Framework\App\Action\HttpGetActionInterface
             $cashappOrderToken = $this->request->getParam('orderToken');
             $this->placeOrderProcessor->execute($quote, $this->validateCheckoutDataCommand, $cashappOrderToken);
         } catch (\Throwable $e) {
-            $errorMessage = $e instanceof \Magento\Framework\Exception\LocalizedException
+            $errorMessage = $e instanceof LocalizedException
                 ? $e->getMessage()
-                : (string)__('Payment is failed');
+                : (string)__('CashApp payment is declined. Please select an alternative payment method.');
             $this->messageManager->addErrorMessage($errorMessage);
-            return $this->redirectFactory->create()->setPath('checkout/cart');
+
+            return $this->redirectFactory->create()->setPath('checkout/cart', [
+                '_scope' => $this->storeManager->getStore()
+            ]);
         }
 
         $this->messageManager->addSuccessMessage((string)__('Cash App Transaction Completed'));
+
         return $this->redirectFactory->create()->setPath('checkout/onepage/success');
     }
 }
