@@ -33,7 +33,7 @@ class Mobile extends \Magento\Framework\App\Action\Action implements \Magento\Fr
     {
         if ($this->request->getParam(self::IS_REDIRECTED) && !$this->request->getParam(self::CASH_REQUEST_ID)) {
             $this->messageManager->addErrorMessage(
-                (string)__('Cash App payment is declined.')
+                (string)__('Cash App Pay payment is declined.')
             );
             return $this->redirectFactory->create()->setPath('checkout');
         }

@@ -1,0 +1,31 @@
+<?xml version="1.0"?>
+<csp_whitelist xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Csp:etc/csp_whitelist.xsd">
+    <policies>
+        <policy id="script-src">
+            <values>
+                <value id="cash-app-scripts" type="host">*.cash.app</value>
+            </values>
+        </policy>
+        <policy id="frame-src">
+            <values>
+                <value id="cash-app-frame" type="host">*.cash.app</value>
+            </values>
+        </policy>
+        <policy id="connect-src">
+            <values>
+                <value id="cash-app-connect" type="host">*.cash.app</value>
+                <value id="amplitude-connect" type="host">api.lab.amplitude.com</value>
+            </values>
+        </policy>
+		<policy id="style-src">
+        		<values>
+                    <value id="cash-app-css" type="host">*.cash.app</value>
+        		</values>
+    	</policy>
+		<policy id="img-src">
+            <values>
+                <value id="cash-app-assets" type="host">*.cash.app</value>
+            </values>
+        </policy>
+    </policies>
+</csp_whitelist>

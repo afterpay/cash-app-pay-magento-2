@@ -11,6 +11,7 @@ use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Message\ManagerInterface;
 use Magento\Payment\Gateway\CommandInterface;
 use Magento\Store\Model\StoreManagerInterface;
+use Psr\Log\LoggerInterface;
 
 class Capture implements HttpGetActionInterface
 {
@@ -24,6 +25,7 @@ class Capture implements HttpGetActionInterface
     private $placeOrderProcessor;
     private $validateCheckoutDataCommand;
     private $storeManager;
+    private $logger;
 
     public function __construct(
         RequestInterface      $request,
@@ -32,7 +34,8 @@ class Capture implements HttpGetActionInterface
         ManagerInterface      $messageManager,
         PlaceOrderProcessor   $placeOrderProcessor,
         CommandInterface      $validateCheckoutDataCommand,
-        StoreManagerInterface $storeManager
+        StoreManagerInterface $storeManager,
+        LoggerInterface       $logger
     ) {
         $this->request = $request;
         $this->session = $session;
@@ -41,13 +44,15 @@ class Capture implements HttpGetActionInterface
         $this->placeOrderProcessor = $placeOrderProcessor;
         $this->validateCheckoutDataCommand = $validateCheckoutDataCommand;
         $this->storeManager = $storeManager;
+        $this->logger = $logger;
     }
 
     public function execute()
     {
+        $cashappOrderToken = $this->request->getParam('orderToken');
         if ($this->request->getParam('status') == self::CHECKOUT_STATUS_CANCELLED) {
             $this->messageManager->addErrorMessage(
-                (string)__('You have cancelled your Cash App payment. Please select an alternative payment method.')
+                (string)__('You have cancelled your Cash App Pay payment. Please select an alternative payment method.')
             );
 
             return $this->redirectFactory->create()->setPath('checkout/cart', [
@@ -56,7 +61,12 @@ class Capture implements HttpGetActionInterface
         }
         if ($this->request->getParam('status') == self::CHECKOUT_STATUS_DECLINED) {
             $this->messageManager->addErrorMessage(
-                (string)__('Cash App payment is declined.')
+                (string)__('Cash App Pay payment is declined.')
+            );
+
+            $this->logger->info(
+                'CashApp payment(' . $cashappOrderToken . ') response status is "' . $this->request->getParam('status')
+                . '".' . 'Customer has been redirected to the checkout page.'
             );
 
             return $this->redirectFactory->create()->setPath('checkout/cart', [
@@ -65,7 +75,12 @@ class Capture implements HttpGetActionInterface
         }
         if ($this->request->getParam('status') != self::CHECKOUT_STATUS_SUCCESS) {
             $this->messageManager->addErrorMessage(
-                (string)__('Cash App payment is failed. Please select an alternative payment method.')
+                (string)__('Cash App Pay payment is failed. Please select an alternative payment method.')
+            );
+
+            $this->logger->info(
+                'CashApp payment(' . $cashappOrderToken . ') response status is "' . $this->request->getParam('status')
+                . '".' . 'Customer has been redirected to the cart page.'
             );
 
             return $this->redirectFactory->create()->setPath('checkout/cart', [
@@ -75,7 +90,6 @@ class Capture implements HttpGetActionInterface
 
         try {
             $quote = $this->session->getQuote();
-            $cashappOrderToken = $this->request->getParam('orderToken');
             $this->placeOrderProcessor->execute($quote, $this->validateCheckoutDataCommand, $cashappOrderToken);
         } catch (\Throwable $e) {
             $errorMessage = $e instanceof LocalizedException
@@ -88,7 +102,7 @@ class Capture implements HttpGetActionInterface
             ]);
         }
 
-        $this->messageManager->addSuccessMessage((string)__('Cash App Transaction Completed'));
+        $this->messageManager->addSuccessMessage((string)__('Cash App Pay Transaction Completed'));
 
         return $this->redirectFactory->create()->setPath('checkout/onepage/success');
     }

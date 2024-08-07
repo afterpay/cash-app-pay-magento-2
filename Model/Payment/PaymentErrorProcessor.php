@@ -23,7 +23,7 @@ class PaymentErrorProcessor extends \Afterpay\Afterpay\Model\Payment\PaymentErro
         try {
             return parent::execute($quote, $e, $payment);
         } catch (LocalizedException $e) {
-            throw new LocalizedException(__(str_replace('Afterpay', 'Cash App', $e->getMessage())));
+            throw new LocalizedException(__(str_replace('Afterpay', 'Cash App Pay', $e->getMessage())));
         }
     }
 }
