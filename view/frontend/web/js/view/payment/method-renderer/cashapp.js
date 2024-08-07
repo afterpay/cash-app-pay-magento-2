@@ -76,14 +76,13 @@ define([
 
                 if (additionalValidators.validate() && this.isPlaceOrderActionAllowed() === true) {
                     this.isPlaceOrderActionAllowed(false);
-
+                    window.cashAppMessageContainer = self.messageContainer;
                     setPaymentInformationAction(
                         self.messageContainer,
                         self.getData()
-                    ).done(function () {
-                        const self = this;
+                    ).done(function (response) {
                         const captureUrlPath = 'cashapp/payment/mobile';
-                        createAfterpayCheckoutAction(self.messageContainer, {
+                        createAfterpayCheckoutAction(window.cashAppMessageContainer, {
                             confirmPath: captureUrlPath,
                             cancelPath: captureUrlPath
                         }).done(function (response) {
@@ -127,7 +126,7 @@ define([
                         });
 
                     }).fail(function (response) {
-                        errorProcessor.process(response, self.messageContainer);
+                        errorProcessor.process(response, window.cashAppMessageContainer);
                     }).always(function () {
                         self.isPlaceOrderActionAllowed(true);
                     });

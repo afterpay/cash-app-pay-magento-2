@@ -11,6 +11,7 @@
     <type name="Afterpay\CashApp\Controller\Payment\Capture">
         <arguments>
             <argument name="validateCheckoutDataCommand" xsi:type="object">Afterpay\Afterpay\Gateway\Command\ValidateCheckoutDataCommand</argument>
+            <argument name="logger" xsi:type="object">Afterpay\Afterpay\Logger</argument>
         </arguments>
     </type>
 </config>
