@@ -4,6 +4,7 @@
         <payment>
             <cashapp>
                 <active>0</active>
+                <sort_order>0</sort_order>
                 <title>Cash App Pay</title>
                 <model>Afterpay\CashApp\Model\Method\MethodFacade</model>
                 <can_use_checkout>1</can_use_checkout>
