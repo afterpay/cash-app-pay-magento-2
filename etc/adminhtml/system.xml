@@ -11,6 +11,10 @@
                         <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                         <config_path>payment/cashapp/active</config_path>
                     </field>
+                    <field id="sort_order" translate="label" type="text" sortOrder="40" showInDefault="1" showInWebsite="1" showInStore="1">
+                        <label>Sort Order</label>
+                        <config_path>payment/cashapp/sort_order</config_path>
+                    </field>
                 </group>
             </group>
         </section>

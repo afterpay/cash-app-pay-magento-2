@@ -1,0 +1,11 @@
+<?xml version="1.0"?>
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <head>
+        <script src="Afterpay_CashApp::js/hyva-mobile-confirmation.js" defer="defer"/>
+    </head>
+    <body>
+        <referenceBlock name="checkout.cashapp.confirmation"
+                        template="Afterpay_CashApp::hyva/mobile-confirmation.phtml"/>
+    </body>
+</page>
